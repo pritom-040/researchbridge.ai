@@ -1,0 +1,41 @@
+name: Deploy ResearchBridge
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint and Build (Turborepo)
+        run: |
+          npx turbo run lint
+          npx turbo run build
+      
+      # Vercel Deployment (Frontend)
+      # Assume VERCEL_TOKEN and VERCEL_ORG_ID are set in GitHub Secrets
+      - name: Deploy Frontend to Vercel
+        run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+
+      # Railway Deployment (Backend via Docker)
+      # Assume RAILWAY_TOKEN is set
+      - name: Deploy Backend to Railway
+        run: |
+          npm i -g @railway/cli
+          railway up --service api --detach
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}

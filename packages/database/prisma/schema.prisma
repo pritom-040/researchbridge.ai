@@ -1,0 +1,166 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector]
+}
+
+enum Role {
+  STUDENT
+  PROFESSOR
+  UNIVERSITY
+  ADMIN
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(STUDENT)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  studentProfile   StudentProfile?
+  professorProfile ProfessorProfile?
+  adminProfile     AdminProfile?
+}
+
+model StudentProfile {
+  id                String   @id @default(uuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cgpa              Float?
+  major             String?
+  testScores        Json?    // e.g., { "IELTS": 7.5, "GRE": 320 }
+  researchInterests Json?    // Array of strings
+  skills            Json?    // Array of strings
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  applications      Application[]
+  documents         Document[]
+  bookmarks         Bookmark[]
+}
+
+model ProfessorProfile {
+  id                String   @id @default(uuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name              String
+  departmentId      String?
+  department        Department? @relation(fields: [departmentId], references: [id])
+  researchInterests Json?
+  googleScholarUrl  String?
+  citationCount     Int      @default(0)
+  embedding         Unsupported("vector(1536)")?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  bookmarksTargeted Bookmark[] @relation("TargetProfessor")
+}
+
+model AdminProfile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  level     Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model University {
+  id             String   @id @default(uuid())
+  name           String
+  country        String
+  globalRank     Int?
+  acceptanceRate Float?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  departments    Department[]
+  scholarships   Scholarship[]
+  bookmarksTargeted Bookmark[] @relation("TargetUniversity")
+}
+
+model Department {
+  id           String   @id @default(uuid())
+  universityId String
+  university   University @relation(fields: [universityId], references: [id], onDelete: Cascade)
+  name         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  professors   ProfessorProfile[]
+}
+
+model Scholarship {
+  id                  String   @id @default(uuid())
+  universityId        String
+  university          University @relation(fields: [universityId], references: [id], onDelete: Cascade)
+  name                String
+  description         String
+  fundingType         String   // FULLY_FUNDED, PARTIAL, etc.
+  degreeLevel         String   // BS, MS, PHD
+  deadline            DateTime?
+  eligibilityCriteria Json?
+  embedding           Unsupported("vector(1536)")?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  applications        Application[]
+  bookmarksTargeted   Bookmark[] @relation("TargetScholarship")
+}
+
+enum ApplicationStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  INTERVIEW
+  ACCEPTED
+  REJECTED
+  WAITLISTED
+}
+
+model Application {
+  id            String   @id @default(uuid())
+  studentId     String
+  student       StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  scholarshipId String
+  scholarship   Scholarship @relation(fields: [scholarshipId], references: [id], onDelete: Cascade)
+  status        ApplicationStatus @default(DRAFT)
+  appliedAt     DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Document {
+  id        String   @id @default(uuid())
+  studentId String
+  student   StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  type      String   // CV, SOP, TRANSCRIPT
+  fileUrl   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Bookmark {
+  id            String   @id @default(uuid())
+  studentId     String
+  student       StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  
+  // A bookmark can target exactly one of these:
+  scholarshipId String?
+  scholarship   Scholarship? @relation("TargetScholarship", fields: [scholarshipId], references: [id])
+  
+  professorId   String?
+  professor     ProfessorProfile? @relation("TargetProfessor", fields: [professorId], references: [id])
+
+  universityId  String?
+  university    University? @relation("TargetUniversity", fields: [universityId], references: [id])
+
+  createdAt     DateTime @default(now())
+}
