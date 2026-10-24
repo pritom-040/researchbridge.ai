@@ -1,3 +1,8 @@
+## Project Preview
+
+![ResearchBridge Homepage](Screenshot 2026-09-02 001200.png)
+
+
 # Turborepo starter
 
 This Turborepo starter is maintained by the Turborepo core team.
