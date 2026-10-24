@@ -1,6 +1,6 @@
 ## Project Preview
 
-![ResearchBridge Homepage](Screenshot 2026-09-02 001200.png)
+![ResearchBridge Homepage](Screenshot%202026-09-02%20001200.png)
 
 
 # Turborepo starter
