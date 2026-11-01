@@ -1,164 +1,317 @@
-## Project Preview
+# ResearchBridge
+### AI-Powered Scholarship Discovery and Academic Opportunity Platform
 
-![ResearchBridge Homepage](Screenshot%202026-09-02%20001200.png)
+ResearchBridge is a platform designed to help students discover scholarship opportunities, explore universities, connect with professors, and manage academic applications through a centralized interface with AI-assisted tools.
 
+The application brings together student-facing opportunity discovery, application tracking, professor-facing workflows, administrative management, and AI services in a modular web platform.
 
-# Turborepo starter
+> **Project status:** Under active development. Features and integrations may change as the project evolves.
 
-This Turborepo starter is maintained by the Turborepo core team.
+---
 
-## Using this example
+## Screenshots
 
-Run the following command:
+The screenshots below are from the current application interface.
 
-```sh
-npx create-turbo@latest
+### Landing Page
+
+<p align="center">
+  <img src="screenshots/landing-page.png" alt="ResearchBridge landing page" width="100%">
+</p>
+
+### Student Dashboard
+
+<p align="center">
+  <img src="screenshots/student-dashboard.png" alt="ResearchBridge student dashboard" width="100%">
+</p>
+
+### Scholarship Discovery
+
+<p align="center">
+  <img src="screenshots/scholarship-discovery.png" alt="ResearchBridge scholarship discovery page" width="100%">
+</p>
+
+### AI Assistant
+
+<p align="center">
+  <img src="screenshots/ai-chat-assistant.png" alt="ResearchBridge AI chat assistant" width="100%">
+</p>
+
+### AI Email Studio
+
+<p align="center">
+  <img src="screenshots/ai-email-studio.png" alt="ResearchBridge AI Email Studio" width="100%">
+</p>
+
+### Application Tracking
+
+<p align="center">
+  <img src="screenshots/student-applications.png" alt="ResearchBridge student applications page" width="100%">
+</p>
+
+### Account and Security Settings
+
+<p align="center">
+  <img src="screenshots/account-security-settings.png" alt="ResearchBridge account and security settings" width="100%">
+</p>
+
+---
+
+## Project Overview
+
+Finding relevant scholarships and academic opportunities can require students to search across multiple websites, review eligibility requirements, investigate universities, and contact academic professionals through separate channels.
+
+ResearchBridge aims to make this process more organized by providing a single platform for discovering opportunities and managing related academic activities.
+
+The application includes distinct experiences for students, professors, and administrators. It also contains a dedicated AI services package for analysis, conversational interactions, and retrieval-augmented generation (RAG) workflows.
+
+## Key Features
+
+### Student Experience
+- Student registration and login.
+- Personalized student dashboard.
+- Scholarship discovery and detailed scholarship pages.
+- University discovery and university detail pages.
+- Professor discovery.
+- Saved scholarships.
+- Scholarship application tracking and management.
+- Account and profile settings.
+- AI chat assistant.
+- AI-assisted email drafting.
+
+### Professor Experience
+- Dedicated professor dashboard.
+- Professor profile interface.
+- Application management interface.
+
+### Administration
+- Administrative dashboard.
+- User management.
+- Scholarship management.
+- University management.
+- Professor management.
+- Application management.
+
+### AI Services
+The `packages/ai-core` workspace contains reusable AI services, including:
+- Analysis services.
+- Conversational AI services.
+- Retrieval-Augmented Generation (RAG) services.
+
+The AI package uses LangChain integrations and includes dependencies for Google Gemini, Groq, and OpenAI providers. The exact provider and model used by a particular feature depend on the application's configuration.
+
+## Technology Stack
+
+| Area | Technologies |
+|---|---|
+| Frontend framework | Next.js 16 |
+| UI library | React 19 |
+| Language | TypeScript |
+| Styling | Tailwind CSS 4 |
+| Backend | Node.js, Express 5 |
+| Database access | Prisma ORM and Prisma Client |
+| AI orchestration | LangChain |
+| AI provider integrations | Google Gemini, Groq, OpenAI |
+| Validation | Zod |
+| Charts | Chart.js |
+| Animation | Framer Motion |
+| Icons | Lucide React |
+| Monorepo | npm Workspaces, Turborepo |
+
+## Architecture and Repository Structure
+
+ResearchBridge is organized as a monorepo. Applications and shared packages live in separate workspaces.
+
+```text
+researchbridge/
+├── apps/
+│   ├── web/                 # Main Next.js application
+│   ├── api/                 # Express API
+│   └── docs/                # Documentation application
+│
+├── packages/
+│   ├── ai-core/             # AI analysis, chat, and RAG services
+│   ├── database/            # Shared Prisma database package
+│   ├── ui/                  # Shared UI components
+│   ├── eslint-config/       # Shared ESLint configuration
+│   └── typescript-config/   # Shared TypeScript configuration
+│
+├── package.json
+├── turbo.json
+└── README.md
 ```
 
-## What's inside?
+### Workspace responsibilities
 
-This Turborepo includes the following packages/apps:
+| Workspace | Responsibility |
+|---|---|
+| `apps/web` | Main user-facing Next.js application |
+| `apps/api` | Backend API, including routes, controllers, middleware, jobs, and services |
+| `apps/docs` | Documentation application |
+| `packages/ai-core` | Shared AI capabilities and provider integrations |
+| `packages/database` | Shared database access through Prisma |
+| `packages/ui` | Reusable UI components |
+| `packages/eslint-config` | Shared lint configuration |
+| `packages/typescript-config` | Shared TypeScript configuration |
 
-### Apps and Packages
+## Getting Started
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+The following instructions describe the workspace-level setup. Environment variable names and database initialization steps must match the configuration in the source code and Prisma schema.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### Prerequisites
 
-### Utilities
+- Node.js (the root package declares Node.js `>=18`).
+- npm (the repository declares `npm@11.6.1` as its package manager).
+- A database configured for the Prisma schema.
+- API credentials for whichever AI providers and other external services you intend to use.
 
-This Turborepo has some additional tools already setup for you:
+### 1. Clone the repository
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
+```bash
+git clone https://github.com/pritom-040/researchbridge.ai.git
+cd researchbridge.ai
 ```
 
-Without global `turbo`, use your package manager:
+### 2. Install dependencies
 
-```sh
-cd my-turborepo
-npx turbo build
-npm dlx turbo build
-npm exec turbo build
+```bash
+npm install
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+### 3. Configure environment variables
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+Create local environment files for the applications and packages that require configuration. Use the source code and Prisma schema to identify the exact variable names and locations.
 
-```sh
-turbo build --filter=docs
+Typical configuration categories may include:
+- Database connection string.
+- Authentication or token secrets.
+- AI provider API keys.
+- Email service credentials.
+- Other service-specific settings.
+
+Do not commit real `.env` files or credentials. See [Security and secrets](#security-and-secrets).
+
+### 4. Start the development applications
+
+From the repository root:
+
+```bash
+npm run dev
 ```
 
-Without global `turbo`:
+The package scripts configure these local web ports:
 
-```sh
-npx turbo build --filter=docs
-npm exec turbo build --filter=docs
-npm exec turbo build --filter=docs
+| Application | Local address |
+|---|---|
+| Main web application | http://localhost:3000 |
+| Documentation application | http://localhost:3001 |
+
+The API workspace also has a development script. The exact API port and any required database setup should be checked in its source/configuration.
+
+## Available Root Commands
+
+Run these commands from the repository root:
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Run workspace development scripts through Turborepo |
+| `npm run build` | Run workspace build scripts |
+| `npm run lint` | Run workspace lint scripts |
+| `npm run check-types` | Run workspace type-check scripts |
+| `npm run format` | Format TypeScript, TSX, and Markdown files with Prettier |
+
+A command can only complete successfully when the relevant workspace configuration and dependencies are set up correctly.
+
+## Security and Secrets
+
+**Never store database passwords, database connection strings, API keys, JWT secrets, email credentials, or other private credentials in source code or in a public GitHub repository.**
+
+### Keep environment files out of Git
+
+Ensure the root `.gitignore` contains rules similar to these. Merge them into the existing file; do not delete other project-specific ignore rules.
+
+```gitignore
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+!.env.template
+
+# Dependencies
+node_modules/
+
+# Build and framework output
+.next/
+dist/
+build/
+out/
+
+# Turborepo cache
+.turbo/
+
+# Logs
+*.log
 ```
 
-### Develop
+### Use placeholders in example files
 
-To develop all apps and packages, run the following command:
+An `.env.example` file may document required configuration, but it must contain placeholders only. Confirm the real variable names from the code before adding them.
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
+```env
+DATABASE_URL="replace_with_your_local_database_url"
+JWT_SECRET="replace_with_a_long_random_secret"
+OPENAI_API_KEY="replace_with_your_api_key"
+GROQ_API_KEY="replace_with_your_api_key"
+GOOGLE_API_KEY="replace_with_your_api_key"
 ```
 
-Without global `turbo`, use your package manager:
+These names are examples only and are not a verified inventory of the project's environment variables.
 
-```sh
-cd my-turborepo
-npx turbo dev
-npm exec turbo dev
-npm exec turbo dev
+### Check whether secrets are already tracked
+
+From the repository root, run:
+
+```powershell
+git ls-files | findstr /I ".env"
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+If a real environment file is listed, `.gitignore` alone will not stop Git from tracking it. To remove a file from Git's index while keeping your local copy, use the exact tracked path:
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
+```powershell
+git rm --cached path\to\.env
 ```
 
-Without global `turbo`:
+Then commit the change. If credentials have ever been pushed to GitHub, **rotate or revoke them immediately**. Removing a file in a later commit does not erase it from Git history. Review repository history and deployment logs as appropriate.
 
-```sh
-npx turbo dev --filter=web
-npm exec turbo dev --filter=web
-npm exec turbo dev --filter=web
-```
+Do not paste secrets into issues, pull requests, screenshots, README files, or chat messages.
 
-### Remote Caching
+## Development Notes
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+- The repository uses npm Workspaces and Turborepo to manage multiple applications and shared packages.
+- Shared code is maintained under `packages/`.
+- The main frontend and documentation application use Next.js.
+- The backend API uses Express and TypeScript.
+- Database access is packaged separately and uses Prisma.
+- AI capabilities are grouped in the dedicated `ai-core` workspace.
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+## Roadmap
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+Potential areas for continued development include:
+- Improving personalized scholarship discovery and matching.
+- Expanding academic and research opportunity workflows.
+- Enhancing student-professor communication.
+- Extending AI-assisted academic tools.
+- Improving automated tests, documentation, and operational monitoring.
+- Continuing to strengthen security, performance, and scalability.
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+## Author
 
-```sh
-cd my-turborepo
-turbo login
-```
+**Pritom Roy**  
+Computer Science and Engineering
 
-Without global `turbo`, use your package manager:
+- GitHub: [@pritom-040](https://github.com/pritom-040)
+- Repository: [ResearchBridge](https://github.com/pritom-040/researchbridge.ai)
 
-```sh
-cd my-turborepo
-npx turbo login
-npm exec turbo login
-npm exec turbo login
-```
+## License
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-npm exec turbo link
-npm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+No license has been specified in this README. Add a license file and update this section if you intend to distribute or reuse the project under an open-source license.
