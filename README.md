@@ -267,23 +267,6 @@ GOOGLE_API_KEY="replace_with_your_api_key"
 
 These names are examples only and are not a verified inventory of the project's environment variables.
 
-### Check whether secrets are already tracked
-
-From the repository root, run:
-
-```powershell
-git ls-files | findstr /I ".env"
-```
-
-If a real environment file is listed, `.gitignore` alone will not stop Git from tracking it. To remove a file from Git's index while keeping your local copy, use the exact tracked path:
-
-```powershell
-git rm --cached path\to\.env
-```
-
-Then commit the change. If credentials have ever been pushed to GitHub, **rotate or revoke them immediately**. Removing a file in a later commit does not erase it from Git history. Review repository history and deployment logs as appropriate.
-
-Do not paste secrets into issues, pull requests, screenshots, README files, or chat messages.
 
 ## Development Notes
 
